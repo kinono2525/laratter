@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -21,6 +21,23 @@
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+
+        <div>
+            <x-input-label for="avatar" :value="__('Profile Image')" />
+
+            <!-- 現在の画像表示 -->
+            <div class="mt-2">
+                @if($user->avatar)
+                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="プロフィール画像" class="w-24 h-24 rounded-full">
+                @else
+                    <img src="{{ asset('images/default-avatar.png') }}" alt="デフォルト画像" class="w-24 h-24 rounded-full">
+                @endif
+            </div>
+
+            <!-- アップロード欄 -->
+            <input type="file" name="avatar" id="avatar" class="mt-2 block w-full text-sm text-gray-600 dark:text-gray-300">
+            <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>
 
         <div>
